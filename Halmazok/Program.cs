@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -10,24 +11,76 @@ namespace Halmazok
 {
 	internal class Program
 	{
-		static List<int> ToHalmaz(List<int> l)
-		{
-			List<int> result = new List<int>();
 
-			foreach (int elem in l)
+		class Halmaz
+		{
+			public List<int> l;
+
+			public Halmaz()
 			{
-                if (!Bennevan(result,elem))
-				{
-					result.Add(elem);
-				}
+				this.l = new List<int>();
 			}
 
-			return result;
+			public Halmaz(List<int> lista)
+			{
+				l = new List<int>();
+
+				foreach (int elem in lista)
+				{
+					if (!Bennevan(l, elem))
+					{
+						l.Add(elem);
+					}
+				}
+
+			}
+
+			public bool Tartalmazza(int e)
+			{
+				int i = 0;
+				while (i < this.l.Count && this.l[i] != e)
+				{
+					i++;
+				}
+				return i < this.l.Count;
+			}
+
+			public override string ToString()
+			{
+				return Stringbe(this.l, "; ", "{ ", " }");
+			}
+
+			public Halmaz Masolat()
+			{
+				Halmaz result = new Halmaz();
+				foreach (int e in this.l)
+				{
+					result.l.Add(e);
+				}
+				return result;
+			}
+
+			public static Halmaz operator +(Halmaz a, Halmaz b)
+			{
+				Halmaz result = a.Masolat();
+				foreach (int item in b.l)
+				{
+					if (!result.Tartalmazza(item))
+					{
+						result.l.Add(item);
+					}
+				}
+				return result;
+			}
+
 		}
+
+
+
 		static bool Bennevan(List<int> l, int e)
 		{
 			int i = 0;
-			while (i < l.Count && l[i]!=e)
+			while (i < l.Count && l[i] != e)
 			{
 				i++;
 			}
@@ -46,42 +99,6 @@ namespace Halmazok
 			}
 			result += $"{t[t.Count - 1]}";
 			return result + end;
-		}
-		static string ToString(List<int> lista)
-		{
-			string result = "{ ";
-			for (int i = 0; i < lista.Count - 1; i++)
-			{
-				result += lista[i].ToString() + "; ";
-			}
-
-			if (0 < lista.Count)
-			{
-				result += lista[lista.Count - 1].ToString();
-			}
-
-			return result += " }";
-		}
-		static List<int> Masol(List<int> l)
-		{
-			List<int> result = new List<int>();
-			foreach (int e in l)
-			{
-				result.Add(e);
-			}
-			return result;
-		}
-		static List<int> Unio(List<int> a, List<int> b)
-		{
-			List<int> result = Masol(a);
-			foreach (int item in b)
-			{
-				if (!Bennevan(result,item))
-				{
-					result.Add(item);
-				}
-			}
-			return result;
 		}
 		static List<int> Metszet(List<int> a, List<int> b)
 		{
@@ -108,7 +125,17 @@ namespace Halmazok
 			return result;
 		}
 
-		static void Kiir(List<int> l) => Console.WriteLine(Stringbe(l));
+		static bool Részhalmaz(List<int> a, List<int> b)
+		{
+			// keressük az első olyan elemét a-nak, ami nincs benne b-ben.
+
+			int i = 0;
+			while (i<a.Count && Bennevan(b, a[i]))
+				i++;
+
+			return i >= a.Count;
+		}
+
 
 		static Random r = new Random();
 		static List<int> Veletlenlista(int hossz, int min, int max)
@@ -123,17 +150,15 @@ namespace Halmazok
 
 		static void Main(string[] args)
 		{
-			List<int> a = ToHalmaz(Veletlenlista(20, 0, 10));
-			List<int> b = ToHalmaz(Veletlenlista(20, -10, 10));
-			Kiir(a);
-			Kiir(b);
-			Kiir(Unio(a, b));
-			Kiir(Metszet(a, b));
-			Kiir(Kivon(a, b));
+			Halmaz h = new Halmaz(new List<int> { 1, 2, 5, 6, 9 });
+			Halmaz g = new Halmaz(new List<int> { 8, 6, 4, 2});
+			Console.WriteLine(h);
+			Console.WriteLine(g);
 
+			Console.WriteLine(g.Tartalmazza(2));
+			Console.WriteLine(g.Tartalmazza(3));
 
-
-
-		}
+            Console.WriteLine(h+g);
+        }
 	}
 }
