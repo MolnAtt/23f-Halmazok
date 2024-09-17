@@ -12,33 +12,32 @@ namespace Halmazok
 	internal class Program
 	{
 
-		class Halmaz
+		class Halmaz<T>
 		{
-			public List<int> l;
+			public List<T> l;
 
 			public Halmaz()
 			{
-				this.l = new List<int>();
+				this.l = new List<T>();
 			}
 
-			public Halmaz(List<int> lista)
+			public Halmaz(List<T> lista)
 			{
-				this.l = new List<int>();
+				this.l = new List<T>();
 
-				foreach (int elem in lista)
+				foreach (T elem in lista)
 				{
 					if (!Bennevan(l, elem))
 					{
 						l.Add(elem);
 					}
 				}
-
 			}
 
-			public bool Tartalmazza(int e)
+			public bool Tartalmazza(T e)
 			{
 				int i = 0;
-				while (i < this.l.Count && this.l[i] != e)
+				while (i < this.l.Count && !this.l[i].Equals(e))
 				{
 					i++;
 				}
@@ -50,20 +49,20 @@ namespace Halmazok
 				return Stringbe(this.l, "; ", "{ ", " }");
 			}
 
-			public Halmaz Masolat()
+			public Halmaz<T> Masolat()
 			{
-				Halmaz result = new Halmaz();
-				foreach (int e in this.l)
+				Halmaz<T> result = new Halmaz<T>();
+				foreach (T e in this.l)
 				{
 					result.l.Add(e);
 				}
 				return result;
 			}
 
-			public static Halmaz operator +(Halmaz a, Halmaz b)
+			public static Halmaz<T> operator +(Halmaz<T> a, Halmaz<T> b)
 			{
-				Halmaz result = a.Masolat();
-				foreach (int item in b.l)
+				Halmaz<T> result = a.Masolat();
+				foreach (T item in b.l)
 				{
 					if (!result.Tartalmazza(item))
 					{
@@ -72,10 +71,10 @@ namespace Halmazok
 				}
 				return result;
 			}
-			public static Halmaz operator *(Halmaz a, Halmaz b)
+			public static Halmaz<T> operator *(Halmaz<T> a, Halmaz<T> b)
 			{
-				Halmaz result = new Halmaz();
-				foreach (int item in a.l)
+				Halmaz<T> result = new Halmaz<T>();
+				foreach (T item in a.l)
 				{
 					if (b.Tartalmazza(item))
 					{
@@ -84,10 +83,10 @@ namespace Halmazok
 				}
 				return result;
 			}
-			public static Halmaz operator -(Halmaz a, Halmaz b)
+			public static Halmaz<T> operator -(Halmaz<T> a, Halmaz<T> b)
 			{
-				Halmaz result = new Halmaz();
-				foreach (int item in a.l)
+				Halmaz<T> result = new Halmaz<T>();
+				foreach (T item in a.l)
 				{
 					if (!b.Tartalmazza(item))
 					{
@@ -97,33 +96,33 @@ namespace Halmazok
 				return result;
 			}
 
-			public static bool operator <=(Halmaz a, Halmaz b)
+			public static bool operator <=(Halmaz<T> a, Halmaz<T> b)
 			{
-				foreach (int a_eleme in a.l)
+				foreach (T a_eleme in a.l)
 					if (!b.Tartalmazza(a_eleme))
 						return false;
 				return true;
 			}
 
-			public static bool operator >=(Halmaz a, Halmaz b) => b <= a;
+			public static bool operator >=(Halmaz<T> a, Halmaz<T> b) => b <= a;
 			//public static bool operator >=(Halmaz a, Halmaz b) 
 			//{
 			//	return b <= a;
 			//}
 
-			public static bool operator ==(Halmaz a, Halmaz b) => a.l.Count == b.l.Count && a <= b;
-			public static bool operator <(Halmaz a, Halmaz b) => a.l.Count < b.l.Count && a <= b;
-			public static bool operator >(Halmaz a, Halmaz b) => b < a;
-			public static bool operator !=(Halmaz a, Halmaz b) => !(a == b);
+			public static bool operator ==(Halmaz<T> a, Halmaz<T> b) => a.l.Count == b.l.Count && a <= b;
+			public static bool operator <(Halmaz<T> a, Halmaz<T> b) => a.l.Count < b.l.Count && a <= b;
+			public static bool operator >(Halmaz<T> a, Halmaz<T> b) => b < a;
+			public static bool operator !=(Halmaz<T> a, Halmaz<T> b) => !(a == b);
 
 		}
 
 
 
-		static bool Bennevan(List<int> l, int e)
+		static bool Bennevan<T>(List<T> l, T e)
 		{
 			int i = 0;
-			while (i < l.Count && l[i] != e)
+			while (i < l.Count && !l[i].Equals(e))
 			{
 				i++;
 			}
@@ -193,8 +192,8 @@ namespace Halmazok
 
 		static void Main(string[] args)
 		{
-			Halmaz h = new Halmaz(new List<int> { 1, 2, 5, 6, 9 });
-			Halmaz g = new Halmaz(new List<int> { 6, 2, 9});
+			Halmaz<int> h = new Halmaz<int>(new List<int> { 1, 2, 5, 6, 9 });
+			Halmaz<int> g = new Halmaz<int>(new List<int> { 6, 2, 9 });
 			Console.WriteLine(h);
 			Console.WriteLine(g);
             Console.WriteLine(h + g);
