@@ -100,15 +100,21 @@ namespace Halmazok
 			public static bool operator <=(Halmaz a, Halmaz b)
 			{
 				foreach (int a_eleme in a.l)
-				{
 					if (!b.Tartalmazza(a_eleme))
-					{
-
-					}
-				}
-				
-				return result;
+						return false;
+				return true;
 			}
+
+			public static bool operator >=(Halmaz a, Halmaz b) => b <= a;
+			//public static bool operator >=(Halmaz a, Halmaz b) 
+			//{
+			//	return b <= a;
+			//}
+
+			public static bool operator ==(Halmaz a, Halmaz b) => a.l.Count == b.l.Count && a <= b;
+			public static bool operator <(Halmaz a, Halmaz b) => a.l.Count < b.l.Count && a <= b;
+			public static bool operator >(Halmaz a, Halmaz b) => b < a;
+			public static bool operator !=(Halmaz a, Halmaz b) => !(a == b);
 
 		}
 
@@ -188,14 +194,14 @@ namespace Halmazok
 		static void Main(string[] args)
 		{
 			Halmaz h = new Halmaz(new List<int> { 1, 2, 5, 6, 9 });
-			Halmaz g = new Halmaz(new List<int> { 8, 6, 4, 2});
+			Halmaz g = new Halmaz(new List<int> { 6, 2, 9});
 			Console.WriteLine(h);
 			Console.WriteLine(g);
-
-			Console.WriteLine(g.Tartalmazza(2));
-			Console.WriteLine(g.Tartalmazza(3));
-
-            Console.WriteLine(h+g);
-        }
+            Console.WriteLine(h + g);
+			Console.WriteLine(h * g);
+			Console.WriteLine(h - g);
+			Console.WriteLine(g < h);
+			Console.WriteLine(g <= h);
+		}
 	}
 }
