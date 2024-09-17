@@ -23,7 +23,7 @@ namespace Halmazok
 
 			public Halmaz(List<int> lista)
 			{
-				l = new List<int>();
+				this.l = new List<int>();
 
 				foreach (int elem in lista)
 				{
@@ -70,6 +70,43 @@ namespace Halmazok
 						result.l.Add(item);
 					}
 				}
+				return result;
+			}
+			public static Halmaz operator *(Halmaz a, Halmaz b)
+			{
+				Halmaz result = new Halmaz();
+				foreach (int item in a.l)
+				{
+					if (b.Tartalmazza(item))
+					{
+						result.l.Add(item);
+					}
+				}
+				return result;
+			}
+			public static Halmaz operator -(Halmaz a, Halmaz b)
+			{
+				Halmaz result = new Halmaz();
+				foreach (int item in a.l)
+				{
+					if (!b.Tartalmazza(item))
+					{
+						result.l.Add(item);
+					}
+				}
+				return result;
+			}
+
+			public static bool operator <=(Halmaz a, Halmaz b)
+			{
+				foreach (int a_eleme in a.l)
+				{
+					if (!b.Tartalmazza(a_eleme))
+					{
+
+					}
+				}
+				
 				return result;
 			}
 
